@@ -68,7 +68,7 @@ body {
 }
 
 .nav-links a:hover {
-    color: #efb810;
+    color: #7512b8;
 }
 
 /* Idioma */
@@ -149,13 +149,15 @@ footer {
 }
 
 footer a {
-  color: #d4af37;
+  color: #7512b8;
   text-decoration: none;
 }
 
 footer a:hover {
   text-decoration: underline;
 }
+
+
 
 
 /* Responsive */
@@ -197,10 +199,114 @@ footer a:hover {
   }
 }
 
+.partidos {
+  margin-bottom: 30px;
+}
 
-  
-  
-  
-  
-  
-  
+.partido {
+  background-color: #222;
+  padding: 10px;
+  border-radius: 6px;
+  margin-bottom: 10px;
+}
+
+.clasificacion {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.clasificacion th, .clasificacion td {
+  border: 1px solid #555;
+  padding: 8px;
+  text-align: center;
+}
+
+.clasificacion th {
+  background-color: #444;
+}
+
+.nav-links a.activo {
+  color: #7512b8;
+}
+
+.patrocinadores {
+  margin-top: 40px;
+  text-align: center;
+  font-size: 16px;
+  color: #fff;
+}
+
+.logos-patrocinadores {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.logos-patrocinadores img {
+  height: 80px;
+  object-fit: contain;
+  border-radius: 0;
+  padding: 4px;
+  max-width: 150px;
+}
+
+.logo-wrapper {
+  width: 150px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-wrapper img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.section img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 20px auto;
+  border-radius: 8px;
+}
+
+.minijuego-card {
+  display: flex;
+  align-items: center;
+  background: #432b6c;
+  border-radius: 15px;
+  padding: 20px;
+  margin: 30px auto;
+  color: #fff;
+  max-width: 90%;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  transition: transform 0.2s ease;
+}
+
+.minijuego-card:hover {
+  transform: scale(1.03);
+  background-color: #593c8e;
+}
+
+.minijuego-icono {
+  font-size: 48px;
+  margin-right: 20px;
+}
+
+.minijuego-texto h3 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.minijuego-texto p {
+  margin: 5px 0 0;
+  font-size: 14px;
+}
+

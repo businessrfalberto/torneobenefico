@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Votación</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f8f8f8;
+      margin: 0;
+      padding: 2rem;
+      text-align: center;
+    }
+
+    h2 {
+      margin-bottom: 2rem;
+      color: #333;
+    }
+
+    .contenedor-equipos {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1.5rem;
+      max-width: 1000px;
+      margin: auto;
+    }
+
+    .tarjeta {
+      background-color: white;
+      border-radius: 12px;
+      padding: 1rem;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .tarjeta:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 6px 14px rgba(0,0,0,0.15);
+    }
+
+    .tarjeta.votado {
+      border: 3px solid #663399;
+    }
+
+    .tarjeta img {
+      width: 200px;
+      height: 200px;
+      object-fit: contain;
+      margin-bottom: 0.5rem;
+    }
+
+    .nombre-equipo {
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+      font-size: 1.1rem;
+    }
+
+    .votos {
+      color: #555;
+      font-size: 0.95rem;
+    }
+  </style>
+</head>
+<body>
+  <h2>Vota por tu equipo favorito</h2>
+  <div class="contenedor-equipos" id="equipos"></div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
+    import { getDatabase, ref, get, set, onValue } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCCF4BVOoud_Tg_SE0WiUAbtBSAPzCx-1k",
+      authDomain: "torneo-moraos.firebaseapp.com",
+      databaseURL: "https://torneo-moraos-default-rtdb.europe-west1.firebasedatabase.app",
+      projectId: "torneo-moraos",
+      storageBucket: "torneo-moraos.firebasestorage.app",
+      messagingSenderId: "1097042355622",
+      appId: "1:1097042355622:web:2d3e0a270f8a84bdbddb67",
+      measurementId: "G-PQXCRX0T6N"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    const equipos = [
+      { nombre: "CD Giro", escudo: "assets/images/badge1.png" },
+      { nombre: "Totys FC", escudo: "assets/images/badge2.png" },
+      { nombre: "Totys Fem", escudo: "assets/images/badge3.png" },
+      { nombre: "Real Canteranos", escudo: "assets/images/badge4.png" },
+      { nombre: "Con Tu Cruz Fc", escudo: "assets/images/badge5.png" },
+      { nombre: "Bajo Palio Fc", escudo: "assets/images/badge6.png" },
+      { nombre: "Real SPQR Balompié", escudo: "assets/images/badge7.png" },
+      { nombre: "Club Atlético Polito", escudo: "assets/images/badge8.png" },
+      { nombre: "Tromponetas Fc", escudo: "assets/images/badge9.png" }
+    ];
+
+    const contenedor = document.getElementById("equipos");
+    const votoAnterior = localStorage.getItem("equipoVotado");
+
+    equipos.forEach(equipo => {
+      const tarjeta = document.createElement("div");
+      tarjeta.className = "tarjeta";
+      tarjeta.id = `equipo-${equipo.nombre}`;
+
+      if (votoAnterior === equipo.nombre) {
+        tarjeta.classList.add("votado");
+      }
+
+      tarjeta.innerHTML = `
+        <img src="${equipo.escudo}" alt="${equipo.nombre}">
+        <div class="nombre-equipo">${equipo.nombre}</div>
+        <div class="votos" id="votos-${equipo.nombre}">0 votos</div>
+      `;
+
+      tarjeta.addEventListener("click", () => {
+        const equipoAnterior = localStorage.getItem("equipoVotado");
+
+        if (equipoAnterior === equipo.nombre) {
+          return;
+        }
+
+        if (equipoAnterior && equipoAnterior !== equipo.nombre) {
+          const refAnterior = ref(db, 'votos/' + equipoAnterior);
+          get(refAnterior).then(snapshot => {
+            const votosPrevios = snapshot.exists() ? snapshot.val() : 1;
+            set(refAnterior, Math.max(0, votosPrevios - 1));
+          });
+          document.getElementById(`equipo-${equipoAnterior}`).classList.remove("votado");
+        }
+
+        const refNuevo = ref(db, 'votos/' + equipo.nombre);
+        get(refNuevo).then(snapshot => {
+          const votosActuales = snapshot.exists() ? snapshot.val() : 0;
+          set(refNuevo, votosActuales + 1);
+        });
+
+        localStorage.setItem("equipoVotado", equipo.nombre);
+
+        document.querySelectorAll(".tarjeta").forEach(e => e.classList.remove("votado"));
+        tarjeta.classList.add("votado");
+      });
+
+      const votosRef = ref(db, 'votos/' + equipo.nombre);
+      onValue(votosRef, snapshot => {
+        const votos = snapshot.exists() ? snapshot.val() : 0;
+        document.getElementById("votos-" + equipo.nombre).textContent = `${votos} voto${votos !== 1 ? "s" : ""}`;
+      });
+
+      contenedor.appendChild(tarjeta);
+    });
+  </script>
+</body>
+</html>
