@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     inicio: `
       <section class="section">
 
-      <h2>Página web oficial del torneo benéfico 2025 de la Real Hermandad de Nuestro Padre Jesús Nazareno</h2>
+      <h2>Página web oficial del torneo 2025 de la Real Hermandad de Nuestro Padre Jesús Nazareno</h2>
 
         <img src="assets/images/cartel.jpeg" alt="Cartel 2025">
       </section>
@@ -44,6 +44,9 @@ document.addEventListener('DOMContentLoaded', () => {
   </div>
   <div class="logo-wrapper">
     <img src="assets/images/sponsor2.png" alt="Patrocinador 2">
+  </div>
+  <div class="logo-wrapper">
+    <img src="assets/images/grupojoven.jpeg" alt="Patrocinador 3">
   </div>
 </div>
 
@@ -196,5 +199,7 @@ window.addEventListener("DOMContentLoaded", () => {
   // Mostrar sección inicio por defecto
   cargarSeccion("inicio");
 });
+
+
 
 });
