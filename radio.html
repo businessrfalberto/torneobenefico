@@ -34,11 +34,69 @@
       font-weight: bold;
       font-size: 18px;
     }
+
+    .legal-toggle {
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background-color: #3d2c54;
+      color: #fff;
+      padding: 1rem;
+      border-radius: 8px;
+      user-select: none;
+      font-weight: bold;
+      margin-top: 2rem;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+      transition: background-color 0.3s ease;
+    }
+
+    .legal-toggle:hover {
+      background-color: #594076;
+    }
+
+    .legal-content {
+      margin-top: 1rem;
+      background-color: #f9f9f9;
+      color: #000;
+      border-left: 4px solid #999;
+      padding: 1rem;
+      border-radius: 0 8px 8px 8px;
+      display: none;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .legal-icon {
+      font-size: 1.2rem;
+    }
   </style>
 </head>
 <body>
   <h1>🎵 Música del Torneo</h1>
 
+  <!-- Botón desplegable de legalidad -->
+  <div class="legal-toggle" onclick="toggleLegal()">
+    <span class="legal-icon">⚖️</span>
+    <span>Legalidad sobre estas canciones</span>
+  </div>
+
+  <!-- Contenido legal desplegable -->
+  <div class="legal-content" id="legalContent">
+    <p>
+      Todas las canciones han sido producidas por mí, <strong>Alberto Ramírez Farfán</strong>, utilizando herramientas de inteligencia artificial.
+      Soy el productor y tengo el derecho de distribuirlas y monetizarlas. Sin embargo, algunas de estas obras pueden no estar registradas oficialmente bajo derechos de autor, debido a que fueron generadas mediante IA.
+    </p>
+    <p style="font-style: italic; color: #555;">
+      All songs have been produced by me, <strong>Alberto Ramírez Farfán</strong>, using AI tools.
+      I am the producer and hold the rights to distribute and monetize them. However, some of these works may not be officially registered under copyright due to their AI-generated nature.
+    </p>
+  </div>
+
+  <!-- Canciones -->
   <div class="cancion">
     <div class="titulo">Jugamos por ti, Jesús</div>
     <audio controls>
@@ -87,5 +145,11 @@
     </audio>
   </div>
 
+  <script>
+    function toggleLegal() {
+      const content = document.getElementById("legalContent");
+      content.style.display = content.style.display === "block" ? "none" : "block";
+    }
+  </script>
 </body>
 </html>

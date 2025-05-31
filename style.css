@@ -338,3 +338,33 @@ body::before {
     }
 }
 
+/* Carrusel contenedor */
+.swiper {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+
+/* Cada slide (escudo) */
+.swiper-slide {
+  background: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: transform 0.3s ease;
+}
+
+/* Imagen del escudo */
+.swiper-slide img {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+/* Efecto de escala en el escudo central */
+.swiper-slide-active img {
+  transform: scale(1.4);
+}

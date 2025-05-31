@@ -2,69 +2,108 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Dribla al Demonio</title>
   <style>
     body {
       margin: 0;
-      padding: 0;
       overflow: hidden;
-      background-color: #2e1a47;
+      background-color: #1e1e2f;
       font-family: sans-serif;
     }
     canvas {
       display: block;
+      background-color: #000;
+    }
+    #gameOverOverlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background-color: rgba(0,0,0,0.8);
+      color: white;
+      font-size: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 10;
+      display: none;
+    }
+    #gameOverOverlay button {
+      margin: 10px;
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #6c3bb1;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    #gameOverOverlay button:hover {
+      background-color: #582a8a;
     }
   </style>
 </head>
 <body>
+
 <canvas id="gameCanvas"></canvas>
+<div id="gameOverOverlay">
+  <p id="finalScore"></p>
+  <button onclick="location.reload()">Reintentar</button>
+  <button onclick="window.location.href='index.html'">Volver a Inicio</button>
+</div>
+
 <script>
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
-const player = {
-  x: canvas.width / 2 - 25,
-  y: canvas.height - 120,
-  width: 50,
-  height: 50,
-  color: "#6c3bb1",
-  touchX: null,
-};
+const playerImg = new Image();
+playerImg.src = "assets/images/jesusgame.png"; // imagen del jugador
 
-const goodItems = ["cruz", "balon"];
-const badItems = ["dinero", "ira", "lujuria"];
+const goodImages = [
+  "assets/images/cruz.png"
+];
+const badImages = [
+  "assets/images/demonio.png",
+  "assets/images/dinero.png",
+  "assets/images/pistola.png",
+  "assets/images/drogas.png"
+];
+
+const player = {
+  x: canvas.width / 2 - 40,
+  y: canvas.height - 100,
+  width: 80,
+  height: 80,
+  touchX: null
+};
 
 let items = [];
 let score = 0;
+let lives = 3;
 let gameOver = false;
+
+function createItem(type) {
+  const img = new Image();
+  const srcArr = type === "good" ? goodImages : badImages;
+  const name = srcArr[Math.floor(Math.random() * srcArr.length)];
+  img.src = name;
+  return {
+    x: Math.random() * (canvas.width - 40),
+    y: -40,
+    width: 40,
+    height: 40,
+    speed: 3 + Math.random() * 2,
+    type: type,
+    img: img
+  };
+}
 
 function spawnItem() {
   const type = Math.random() < 0.6 ? "good" : "bad";
-  const name = type === "good" ? goodItems[Math.floor(Math.random() * goodItems.length)] : badItems[Math.floor(Math.random() * badItems.length)];
-  items.push({
-    x: Math.random() * (canvas.width - 30),
-    y: -30,
-    width: 30,
-    height: 30,
-    speed: 4 + Math.random() * 2,
-    type: type,
-    name: name,
-  });
-}
-
-function drawPlayer() {
-  ctx.fillStyle = player.color;
-  ctx.fillRect(player.x, player.y, player.width, player.height);
-}
-
-function drawItem(item) {
-  ctx.fillStyle = item.type === "good" ? "#00ff99" : "#ff3333";
-  ctx.beginPath();
-  ctx.arc(item.x + item.width/2, item.y + item.height/2, 15, 0, Math.PI * 2);
-  ctx.fill();
+  items.push(createItem(type));
 }
 
 function detectCollision(a, b) {
@@ -76,11 +115,18 @@ function detectCollision(a, b) {
   );
 }
 
+function drawPlayer() {
+  ctx.drawImage(playerImg, player.x, player.y, player.width, player.height);
+}
+
+function drawItem(item) {
+  ctx.drawImage(item.img, item.x, item.y, item.width, item.height);
+}
+
 function update() {
   if (gameOver) return;
 
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-
   drawPlayer();
 
   items.forEach((item, index) => {
@@ -89,26 +135,43 @@ function update() {
 
     if (detectCollision(player, item)) {
       if (item.type === "bad") {
-        gameOver = true;
-        alert("¡Has caído en la tentación!\\nPuntuación: " + score);
-        location.reload();
+        loseLife();
+        items.splice(index, 1);
       } else {
-        score += item.name === "cruz" ? 5 : 1;
+        score += item.img.src.includes("cruz") ? 5 : 1;
         items.splice(index, 1);
       }
     } else if (item.y > canvas.height) {
+      if (item.type === "good") {
+        loseLife();
+      }
       items.splice(index, 1);
     }
   });
 
+  // Mostrar puntuación y vidas
   ctx.fillStyle = "#fff";
   ctx.font = "20px Arial";
   ctx.fillText("Puntuación: " + score, 20, 30);
+  ctx.fillText("Vidas: " + lives, 20, 60);
 
   requestAnimationFrame(update);
 }
 
-setInterval(spawnItem, 700);
+function loseLife() {
+  lives--;
+  if (lives <= 0) {
+    endGame();
+  }
+}
+
+function endGame() {
+  gameOver = true;
+  document.getElementById("finalScore").textContent = "Puntuación final: " + score;
+  document.getElementById("gameOverOverlay").style.display = "flex";
+}
+
+setInterval(spawnItem, 1000);
 
 canvas.addEventListener("touchstart", (e) => {
   player.touchX = e.touches[0].clientX;

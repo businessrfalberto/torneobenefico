@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trivia Cristiana</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background-color: #f5f2ea;
+      padding: 20px;
+      text-align: center;
+      color: #333;
+    }
+    .quiz-container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .question {
+      font-size: 20px;
+      margin-bottom: 20px;
+    }
+    .answers button {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 8px;
+      background-color: #e0d6c6;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    .answers button:hover {
+      background-color: #d3c1a8;
+    }
+    .result {
+      font-size: 22px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="quiz-container">
+    <h1>Trivia sobre Jesús y el Cristianismo</h1>
+    <div class="question" id="question"></div>
+    <div class="answers" id="answers"></div>
+    <div class="result" id="result"></div>
+  </div>
+
+  <script>
+    const questions = [
+      {
+        question: "¿Dónde nació Jesús?",
+        answers: ["Belén", "Jerusalén", "Nazaret"],
+        correct: 0
+      },
+      {
+        question: "¿Quién bautizó a Jesús?",
+        answers: ["Pedro", "Juan el Bautista", "Pablo"],
+        correct: 1
+      },
+      {
+        question: "¿Cuántos apóstoles tuvo Jesús?",
+        answers: ["10", "12", "14"],
+        correct: 1
+      },
+      {
+        question: "¿Qué hizo Jesús en las bodas de Caná?",
+        answers: ["Sanó a un enfermo", "Multiplicó panes", "Convirtió el agua en vino"],
+        correct: 2
+      },
+      {
+        question: "¿Cómo murió Jesús?",
+        answers: ["Crucificado", "Apedreado", "Decapitado"],
+        correct: 0
+      }
+    ];
+
+    let currentQuestion = 0;
+    let score = 0;
+
+    function showQuestion() {
+      const q = questions[currentQuestion];
+      document.getElementById("question").innerText = q.question;
+      const answersDiv = document.getElementById("answers");
+      answersDiv.innerHTML = "";
+
+      q.answers.forEach((answer, index) => {
+        const btn = document.createElement("button");
+        btn.innerText = answer;
+        btn.onclick = () => checkAnswer(index);
+        answersDiv.appendChild(btn);
+      });
+    }
+
+    function checkAnswer(selected) {
+      const q = questions[currentQuestion];
+      if (selected === q.correct) score++;
+      currentQuestion++;
+
+      if (currentQuestion < questions.length) {
+        showQuestion();
+      } else {
+        document.getElementById("question").style.display = "none";
+        document.getElementById("answers").style.display = "none";
+        document.getElementById("result").innerText =
+          `Has acertado ${score} de ${questions.length} preguntas.`;
+      }
+    }
+
+    showQuestion();
+  </script>
+</body>
+</html>

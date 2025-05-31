@@ -10,10 +10,28 @@ document.addEventListener('DOMContentLoaded', () => {
         <img src="assets/images/cartel.jpeg" alt="Cartel 2025">
       </section>
 
+      <section class="section">
+      <h2>Nuestros equipos:</h2>
+    <div class="swiper mySwiper">
+  <div class="swiper-wrapper">
+    <div class="swiper-slide"><img src="assets/images/badge1.png" alt="Escudo 1" /></div>
+    <div class="swiper-slide"><img src="assets/images/badge2.png" alt="Escudo 2" /></div>
+    <div class="swiper-slide"><img src="assets/images/badge3.png" alt="Escudo 3" /></div>
+    <div class="swiper-slide"><img src="assets/images/badge4.png" alt="Escudo 4" /></div>
+    <div class="swiper-slide"><img src="assets/images/badge5.png" alt="Escudo 5" /></div>
+    <div class="swiper-slide"><img src="assets/images/badge6.png" alt="Escudo 6" /></div>
+    <div class="swiper-slide"><img src="assets/images/badge7.png" alt="Escudo 7" /></div>
+    <div class="swiper-slide"><img src="assets/images/badge8.png" alt="Escudo 8" /></div>
+    <div class="swiper-slide"><img src="assets/images/badge9.png" alt="Escudo 9" /></div>
+    <!-- Añade más escudos si lo necesitas -->
+  </div>
+</div>
+</section>
+
     <div class="minijuego-card" onclick="window.location.href='votacion.html'">
-  <div class="minijuego-icono">📈</div>
+  <div class="minijuego-icono">🔮</div>
   <div class="minijuego-texto">
-    <h3>🔮 Vota por tu equipo favorito</h3>
+    <h3>Vota por tu equipo favorito</h3>
   <p>Haz clic en el botón para votar por el equipo que crees que ganará.</p>
   </div>
 </div>
@@ -31,6 +49,14 @@ document.addEventListener('DOMContentLoaded', () => {
   <div class="minijuego-texto">
     <h3>Escucha nuestra música</h3>
     <p>Canciones del torneo, de Jesús y del pueblo. ¡Dale al play!</p>
+  </div>
+</div>
+
+<div class="minijuego-card" onclick="window.location.href='trivial.html'">
+  <div class="minijuego-icono">✅</div>
+  <div class="minijuego-texto">
+    <h3>Juega a nuestra versión del trivial critiana</h3>
+    <p>Preguntas a cerca de Jesús, de la hermandad y del cristianismo</p>
   </div>
 </div>
 
@@ -178,6 +204,20 @@ function cargarSeccion(seccion) {
 
   // Scroll al principio
   window.scrollTo({ top: 0, behavior: "smooth" });
+
+  if (seccion === "inicio") {
+    new Swiper(".mySwiper", {
+      slidesPerView: 5,
+      spaceBetween: 20,
+      loop: true,
+      centeredSlides: true,
+      navigation: {
+        nextEl: ".swiper-button-next",
+        prevEl: ".swiper-button-prev",
+      },
+    });
+  }
+  
 }
 
 // Cuando el DOM esté cargado
@@ -199,6 +239,7 @@ window.addEventListener("DOMContentLoaded", () => {
   // Mostrar sección inicio por defecto
   cargarSeccion("inicio");
 });
+
 
 
 
