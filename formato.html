@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title><Formato> - Torneo Morao</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <header class="navbar">
+    <div class="logo" onclick="window.location.href='index.html'">
+      <img src="assets/images/logo.jpeg" alt="Logo del Torneo" id="logo-img"/>
+    </div>
+    <nav class="nav-menu">
+      <ul class="nav-links">
+        <li><a href="index.html">Volver al Inicio</a></li>
+      </ul>
+    </nav>
+  </header>
+
+<!-- Botón desplegable de legalidad -->
+  <div class="legal-toggle" onclick="toggleLegal()">
+    <span class="legal-icon">🧾</span>
+    <span>Información sobre el formato del torneo</span>
+  </div>
+
+  <!-- Contenido legal desplegable -->
+  <div class="legal-content" id="legalContent">
+    <p>
+      El formato del torneo de los moraos 2025 <strong>será definido próximamente</strong>. Al estar todavía abierto el plazo de inscripción de nuevos equipos, no se han definido aún
+      las reglas del mismo. Próximamente, tras el cierre de las inscripciones de los equipos, esta sección será actualizada automáticamente y podrás ver cómo será el formato
+      de este torneo 2025. ¡Muchas gracias por su comprensión!
+    </p>
+  </div>
+
+  <br><br>
+  <video autoplay loop muted playsinline style="max-width: 100%; display: block; margin: auto;">
+  <source src="assets/images/jesusconstruyendo.mp4" type="video/mp4">
+  Tu navegador no soporta la etiqueta de video.
+</video>
+
+<br><br>
+
+    <footer class="footer">
+  <p>© 2025 Alberto Ramírez Farfán. Todos los derechos reservados.</p>
+  <p>📱 <a href="https://instagram.com/alberto_rf12">Mi Instagram</a><br> ☎ +34 687 27 84 21 <br> ✉ <a href="mailto:albertorfesp@gmail.com">albertorfesp@gmail.com</a></p>
+</div>
+
+  <script>
+  function toggleLegal() {
+    const content = document.getElementById("legalContent");
+    content.style.display = content.style.display === "block" ? "none" : "block";
+  }
+</script>
+
+</body>
+</html>

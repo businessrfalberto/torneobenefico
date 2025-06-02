@@ -368,3 +368,95 @@ body::before {
 .swiper-slide-active img {
   transform: scale(1.4);
 }
+
+.novedad-card {
+  background-color: #f6f6f6;
+  border-left: 5px solid #6c3bb1;
+  padding: 15px;
+  margin: 20px 0;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+.novedad-card h3 {
+  margin-top: 0;
+}
+.novedad-card .fecha {
+  font-size: 0.9em;
+  color: #666;
+}
+
+.minijuego-icono img.icono-img {
+  width: 40px;      /* o el tamaño que uses normalmente para los emojis */
+  height: 40px;
+  object-fit: contain;
+}
+
+/* Estilos para el bloque de legalidad */
+.legal-toggle {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: #3d2c54;
+  color: #fff;
+  padding: 1rem;
+  border-radius: 8px;
+  user-select: none;
+  font-weight: bold;
+  margin-top: 2rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  transition: background-color 0.3s ease;
+}
+
+.legal-toggle:hover {
+  background-color: #594076;
+}
+
+.legal-content {
+  margin-top: 1rem;
+  background-color: #f9f9f9;
+  color: #000;
+  border-left: 4px solid #999;
+  padding: 1rem;
+  border-radius: 0 8px 8px 8px;
+  display: none;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.legal-icon {
+  font-size: 1.2rem;
+}
+
+.section:first-of-type {
+    margin-top: 5px;
+}
+
+.cookie-banner {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #2e1a47;
+  color: white;
+  padding: 15px;
+  text-align: center;
+  z-index: 9999;
+  display: none;
+  font-size: 14px;
+}
+.cookie-banner button {
+  background: #6c3bb1;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  margin-left: 10px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+.cookie-banner button:hover {
+  background: #4a267a;
+}

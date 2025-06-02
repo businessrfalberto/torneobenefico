@@ -28,6 +28,26 @@ document.addEventListener('DOMContentLoaded', () => {
 </div>
 </section>
 
+<div class="minijuego-card" onclick="window.location.href='formato.html'">
+  <div class="minijuego-icono">
+    <img src="assets/images/perro.jpg" alt="Formato" class="icono-img">
+  </div>
+  <div class="minijuego-texto">
+    <h3>Formato del torneo 2025</h3>
+    <p>Descubre el funcionamiento del torneo de los moraos 2025</p>
+  </div>
+</div>
+
+
+<div class="minijuego-card" onclick="window.location.href='noticias.html'">
+  <div class="minijuego-icono">📰</div>
+  <div class="minijuego-texto">
+    <h3>Torneo Morao - Últimas Noticias</h3>
+    <p>No te quedes atrás y descubre las últimas noticias y novedades.</p>
+  </div>
+</div>
+
+
     <div class="minijuego-card" onclick="window.location.href='votacion.html'">
   <div class="minijuego-icono">🔮</div>
   <div class="minijuego-texto">
@@ -69,9 +89,6 @@ document.addEventListener('DOMContentLoaded', () => {
     <img src="assets/images/sponsor1.png" alt="Patrocinador 1">
   </div>
   <div class="logo-wrapper">
-    <img src="assets/images/sponsor2.png" alt="Patrocinador 2">
-  </div>
-  <div class="logo-wrapper">
     <img src="assets/images/grupojoven.jpeg" alt="Patrocinador 3">
   </div>
 </div>
@@ -84,10 +101,20 @@ document.addEventListener('DOMContentLoaded', () => {
     masculino: `
       <section class="section">
 
-      <video autoplay loop muted playsinline style="max-width: 100%; display: block; margin: auto;">
-  <source src="assets/images/jesusconstruyendo.mp4" type="video/mp4">
-  Tu navegador no soporta la etiqueta de video.
-</video>
+      <!-- Botón desplegable de legalidad -->
+  <div class="legal-toggle" onclick="toggleLegal()">
+    <span class="legal-icon">❔</span>
+    <span>Sobre la información en esta categoría</span>
+  </div>
+
+  <!-- Contenido legal desplegable -->
+  <div class="legal-content" id="legalContent">
+    <p>
+      A medida que se acerque la fecha, se actualizará esta sección con la información real de los equipos y el formato del torneo.
+Actualmente, los equipos y emparejamientos mostrados son solo ilustrativos, ya que aún no se han cerrado las inscripciones ni definido el formato.
+¡Gracias por su comprensión!
+    </p>
+  </div>
 
 
         <h2>Partidos - Categoría Masculina</h2>
@@ -122,6 +149,21 @@ document.addEventListener('DOMContentLoaded', () => {
     `,
     femenino: `
       <section class="section">
+
+      <!-- Botón desplegable de legalidad -->
+  <div class="legal-toggle" onclick="toggleLegal()">
+    <span class="legal-icon">❔</span>
+    <span>Sobre la información en esta categoría</span>
+  </div>
+
+  <!-- Contenido legal desplegable -->
+  <div class="legal-content" id="legalContent">
+    <p>
+      A medida que se acerque la fecha, se actualizará esta sección con la información real de los equipos y el formato del torneo.
+Actualmente, los equipos y emparejamientos mostrados son solo ilustrativos, ya que aún no se han cerrado las inscripciones ni definido el formato.
+¡Gracias por su comprensión!
+    </p>
+  </div>
         <h2>Partidos - Categoría Femenina</h2>
         <div class="partidos">
           <div class="partido">
@@ -154,6 +196,21 @@ document.addEventListener('DOMContentLoaded', () => {
     `,
     infantil: `
       <section class="section">
+
+      <!-- Botón desplegable de legalidad -->
+  <div class="legal-toggle" onclick="toggleLegal()">
+    <span class="legal-icon">❔</span>
+    <span>Sobre la información en esta categoría</span>
+  </div>
+
+  <!-- Contenido legal desplegable -->
+  <div class="legal-content" id="legalContent">
+    <p>
+      A medida que se acerque la fecha, se actualizará esta sección con la información real de los equipos y el formato del torneo.
+Actualmente, los equipos y emparejamientos mostrados son solo ilustrativos, ya que aún no se han cerrado las inscripciones ni definido el formato.
+¡Gracias por su comprensión!
+    </p>
+  </div>
         <h2>Partidos - Categoría Infantil</h2>
         <div class="partidos">
           <div class="partido">
@@ -238,9 +295,17 @@ window.addEventListener("DOMContentLoaded", () => {
 
   // Mostrar sección inicio por defecto
   cargarSeccion("inicio");
-});
-
-
-
 
 });
+
+
+
+
+});
+
+function toggleLegal() {
+  const content = document.getElementById("legalContent");
+  if (content) {
+    content.style.display = content.style.display === "block" ? "none" : "block";
+  }
+}
