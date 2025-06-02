@@ -5,9 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Torneo Los Moraos 2025</title>
   <link rel="stylesheet" href="style.css" />
-  <!-- Usercentrics Cookie Banner -->
-  <script src="https://web.cmp.usercentrics.eu/modules/autoblocker.js"></script>
-  <script id="usercentrics-cmp" src="https://web.cmp.usercentrics.eu/ui/loader.js" data-settings-id="vMSO1lDwHsoqLN" async></script>
+  <script 
+  id="usercentrics-cmp" 
+  src="https://web.cmp.usercentrics.eu/ui/loader.js" 
+  data-settings-id="vMSO1lDwHsoqLN"
+  data-blockingmode="auto"
+  async>
+</script>
 
   <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-PQXCRX0T6N"></script>
@@ -28,6 +32,38 @@
 </head>
 
 <body>
+
+  <div id="modal-aviso" style="
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background-color: rgba(131, 66, 145, 0.226);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 9999;
+">
+  <div style="
+  background-color: white;
+  padding: 20px;
+  max-width: 400px;
+  text-align: center;
+  border-radius: 8px;
+  position: relative;
+  color: black;
+">
+
+    <button onclick="cerrarAviso()" style="
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: none;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+    ">✖</button>
+    <h2>¡Aviso importante!</h2>
+    <p>Estamos trabajando en nuevas actualizaciones. ¡Gracias por visitar!</p>
+  </div>
+</div>
 
   
 
@@ -57,12 +93,30 @@
     <footer class="footer">
   <p>© 2025 Alberto Ramírez Farfán. Todos los derechos reservados.</p>
   <p>📱 <a href="https://instagram.com/alberto_rf12">Mi Instagram</a><br> ☎ +34 687 27 84 21 <br> ✉ <a href="mailto:albertorfesp@gmail.com">albertorfesp@gmail.com</a></p>
-</div>
-
 </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <script src="script.js"></script>
+
+<script>
+  const AVISO_VERSION = "1.0";
+
+  function cerrarAviso() {
+    const modal = document.getElementById("modal-aviso");
+    if (modal) {
+      modal.style.display = "none";
+      localStorage.setItem("avisoVisto", AVISO_VERSION);
+    }
+  }
+
+  (function() {
+    const visto = localStorage.getItem("avisoVisto");
+    const modal = document.getElementById("modal-aviso");
+    if (visto === AVISO_VERSION && modal) {
+      modal.style.display = "none";
+    }
+  })();
+</script>
 
 
   

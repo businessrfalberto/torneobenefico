@@ -460,3 +460,23 @@ body::before {
 .cookie-banner button:hover {
   background: #4a267a;
 }
+
+.novedad-card {
+  background-color: #1e1e1e; /* fondo gris oscuro para mejor contraste */
+  color: #fff; /* texto blanco sobre fondo oscuro */
+  border-left: 5px solid #7512b8;
+  text-align: left;
+  padding: 15px;
+  margin: 20px 0;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+}
+
+.novedad-card .fecha {
+  font-size: 0.9em;
+  color: #aaa; /* gris claro */
+}
+
+.novedad-card h3 {
+  color: #fff;
+}

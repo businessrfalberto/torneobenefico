@@ -35,12 +35,33 @@
       cursor: pointer;
       transition: background-color 0.3s;
     }
-    .answers button:hover {
-      background-color: #d3c1a8;
+    .answers button.correct {
+      background-color: #a8d5a2 !important;
+    }
+    .answers button.incorrect {
+      background-color: #e29c9c !important;
+    }
+    .answers button:disabled {
+      cursor: default;
+      opacity: 0.8;
     }
     .result {
       font-size: 22px;
       margin-top: 20px;
+    }
+    #return-btn {
+      display: none;
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #d3c1a8;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s;
+    }
+    #return-btn:hover {
+      background-color: #bca688;
     }
   </style>
 </head>
@@ -50,42 +71,44 @@
     <div class="question" id="question"></div>
     <div class="answers" id="answers"></div>
     <div class="result" id="result"></div>
+    <button id="return-btn" onclick="location.href='index.html'">Volver al índice</button>
   </div>
 
   <script>
     const questions = [
-      {
-        question: "¿Dónde nació Jesús?",
-        answers: ["Belén", "Jerusalén", "Nazaret"],
-        correct: 0
-      },
-      {
-        question: "¿Quién bautizó a Jesús?",
-        answers: ["Pedro", "Juan el Bautista", "Pablo"],
-        correct: 1
-      },
-      {
-        question: "¿Cuántos apóstoles tuvo Jesús?",
-        answers: ["10", "12", "14"],
-        correct: 1
-      },
-      {
-        question: "¿Qué hizo Jesús en las bodas de Caná?",
-        answers: ["Sanó a un enfermo", "Multiplicó panes", "Convirtió el agua en vino"],
-        correct: 2
-      },
-      {
-        question: "¿Cómo murió Jesús?",
-        answers: ["Crucificado", "Apedreado", "Decapitado"],
-        correct: 0
-      }
+      { question: "¿Dónde nació Jesús?", answers: ["Belén", "Jerusalén", "Nazaret"], correct: 0 },
+      { question: "¿Quién bautizó a Jesús?", answers: ["Pedro", "Juan el Bautista", "Pablo"], correct: 1 },
+      { question: "¿Cuántos apóstoles tuvo Jesús?", answers: ["10", "12", "14"], correct: 1 },
+      { question: "¿Qué hizo Jesús en las bodas de Caná?", answers: ["Sanó a un enfermo", "Multiplicó panes", "Convirtió el agua en vino"], correct: 2 },
+      { question: "¿Cómo murió Jesús?", answers: ["Crucificado", "Apedreado", "Decapitado"], correct: 0 },
+      { question: "¿Dónde fue crucificado Jesús?", answers: ["Monte Sinaí", "Gólgota", "Monte de los Olivos"], correct: 1 },
+      { question: "¿Quién negó a Jesús tres veces?", answers: ["Juan", "Pedro", "Tomás"], correct: 1 },
+      { question: "¿Quién traicionó a Jesús?", answers: ["Judas Iscariote", "Simón", "Mateo"], correct: 0 },
+      { question: "¿Qué profesión tenía Jesús?", answers: ["Pastor", "Pescador", "Carpintero"], correct: 2 },
+      { question: "¿A qué edad comenzó Jesús su ministerio?", answers: ["25 años", "30 años", "33 años"], correct: 1 },
+      { question: "¿Cómo se llamaba la madre de Jesús?", answers: ["Elisabet", "María", "Marta"], correct: 1 },
+      { question: "¿Qué hizo Jesús con cinco panes y dos peces?", answers: ["Curó a un ciego", "Multiplicó la comida", "Resucitó a un muerto"], correct: 1 },
+      { question: "¿Qué apóstol caminó sobre el agua hacia Jesús?", answers: ["Pedro", "Juan", "Santiago"], correct: 0 },
+      { question: "¿Quién escribió el Apocalipsis?", answers: ["Lucas", "Juan", "Pablo"], correct: 1 },
+      { question: "¿Quién fue el primer mártir cristiano?", answers: ["Pedro", "Esteban", "Andrés"], correct: 1 },
+      { question: "¿Qué apóstol dudó de la resurrección de Jesús?", answers: ["Tomás", "Mateo", "Felipe"], correct: 0 },
+      { question: "¿Qué hizo Jesús antes de resucitar a Lázaro?", answers: ["Ayunó", "Oró", "Lloró"], correct: 2 },
+      { question: "¿Cuántos días ayunó Jesús en el desierto?", answers: ["20", "30", "40"], correct: 2 },
+      { question: "¿Qué animal simboliza al Espíritu Santo?", answers: ["Paloma", "Cordero", "León"], correct: 0 },
+      { question: "¿Quién fue el primer papa según la tradición católica?", answers: ["Pablo", "Pedro", "Juan"], correct: 1 },
+      { question: "¿Qué significa 'Mesías'?", answers: ["Rey", "Ungido", "Salvador"], correct: 1 },
+      { question: "¿Qué libro narra el nacimiento de Jesús?", answers: ["Apocalipsis", "Génesis", "Evangelios"], correct: 2 },
+      { question: "¿Quién ayudó a Jesús a cargar la cruz?", answers: ["José de Arimatea", "Simón de Cirene", "Bartolomé"], correct: 1 },
+      { question: "¿A qué edad murió Jesús?", answers: ["30", "33", "40"], correct: 1 },
+      { question: "¿Qué apóstol fue conocido como el discípulo amado?", answers: ["Juan", "Pedro", "Judas Tadeo"], correct: 0 }
     ];
 
     let currentQuestion = 0;
     let score = 0;
+    const shuffledQuestions = questions.sort(() => Math.random() - 0.5);
 
     function showQuestion() {
-      const q = questions[currentQuestion];
+      const q = shuffledQuestions[currentQuestion];
       document.getElementById("question").innerText = q.question;
       const answersDiv = document.getElementById("answers");
       answersDiv.innerHTML = "";
@@ -93,29 +116,41 @@
       q.answers.forEach((answer, index) => {
         const btn = document.createElement("button");
         btn.innerText = answer;
-        btn.onclick = () => checkAnswer(index);
+        btn.onclick = () => checkAnswer(index, btn);
         answersDiv.appendChild(btn);
       });
     }
 
-    function checkAnswer(selected) {
-      const q = questions[currentQuestion];
-      if (selected === q.correct) score++;
-      currentQuestion++;
+    function checkAnswer(selectedIndex, selectedBtn) {
+      const q = shuffledQuestions[currentQuestion];
+      const buttons = document.querySelectorAll(".answers button");
 
-      if (currentQuestion < questions.length) {
-        showQuestion();
-      } else {
-        document.getElementById("question").style.display = "none";
-        document.getElementById("answers").style.display = "none";
-        document.getElementById("result").innerText =
-          `Has acertado ${score} de ${questions.length} preguntas.`;
-      }
+      buttons.forEach((btn, idx) => {
+        btn.disabled = true;
+        if (idx === q.correct) {
+          btn.classList.add("correct");
+        } else if (idx === selectedIndex) {
+          btn.classList.add("incorrect");
+        }
+      });
+
+      if (selectedIndex === q.correct) score++;
+
+      setTimeout(() => {
+        currentQuestion++;
+        if (currentQuestion < shuffledQuestions.length) {
+          showQuestion();
+        } else {
+          document.getElementById("question").style.display = "none";
+          document.getElementById("answers").style.display = "none";
+          document.getElementById("result").innerText =
+            `¡Has terminado todas las preguntas! Has acertado ${score} de ${shuffledQuestions.length}. ¡Buen trabajo! 🙌`;
+          document.getElementById("return-btn").style.display = "inline-block";
+        }
+      }, 1000);
     }
 
     showQuestion();
   </script>
-
-  
 </body>
 </html>
