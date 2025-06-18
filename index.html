@@ -5,84 +5,62 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Torneo Los Moraos 2025</title>
   <link rel="stylesheet" href="style.css" />
-  <script 
-  id="usercentrics-cmp" 
-  src="https://web.cmp.usercentrics.eu/ui/loader.js" 
-  data-settings-id="vMSO1lDwHsoqLN"
-  data-blockingmode="auto"
-  async>
-</script>
-
-  <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-PQXCRX0T6N"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-PQXCRX0T6N');
-</script>
-
-<link
-  rel="stylesheet"
-  href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
-/>
-
-
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
 </head>
 
-<body>
-
-  <div id="modal-aviso" style="
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background-color: rgba(131, 66, 145, 0.226);
-  display: flex; align-items: center; justify-content: center;
-  z-index: 9999;
-">
-  <div style="
-  background-color: white;
-  padding: 20px;
-  max-width: 400px;
-  text-align: center;
-  border-radius: 8px;
-  position: relative;
-  color: black;
-">
-
-    <button onclick="cerrarAviso()" style="
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      background: none;
-      border: none;
-      font-size: 20px;
-      cursor: pointer;
-    ">✖</button>
-    <h2>¡Aviso importante!</h2>
-    <p>Estamos trabajando en nuevas actualizaciones. ¡Gracias por visitar!</p>
-  </div>
+<!-- Celebración Final -->
+<div id="celebracion" style="display: none;">
+  <canvas id="fireworksCanvas"></canvas>
+  <div id="ganadorFinal" class="ganador-animado"></div>
 </div>
 
-  
+
+<body>
+  <div id="modal-aviso" style="
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(131, 66, 145, 0.226);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 9999;
+  ">
+    <div style="
+      background-color: white;
+      padding: 20px;
+      max-width: 400px;
+      text-align: center;
+      border-radius: 8px;
+      position: relative;
+      color: black;
+    ">
+      <button onclick="cerrarAviso()" style="
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: none;
+        border: none;
+        font-size: 20px;
+        cursor: pointer;
+      ">✖</button>
+      <h2>¡Aviso importante!</h2>
+      <p>Estamos trabajando en nuevas actualizaciones. ¡Gracias por visitar!</p>
+    </div>
+  </div>
 
   <!-- Header -->
   <header class="navbar">
-  <div class="logo">
-    <img src="assets/images/logo.jpeg" alt="Logo del Torneo" id="logo-img" data-section="inicio"/>
-  </div>
-
-  <nav class="nav-menu">
-    <ul class="nav-links" id="nav-links">
+    <div class="logo">
+      <img src="assets/images/logo.jpeg" alt="Logo del Torneo" id="logo-img" data-section="inicio"/>
+    </div>
+    <nav class="nav-menu">
+      <ul class="nav-links" id="nav-links">
         <li><a href="#" data-section="inicio">Inicio</a></li>
-      <li><a href="#" data-section="masculino">Masculino</a></li>
-      <li><a href="#" data-section="femenino">Femenino</a></li>
-      <li><a href="#" data-section="infantil">Infantil</a></li>
-    </ul>
-  </nav>
-</header>
-
+        <li><a href="#" data-section="masculino">Masculino</a></li>
+        <li><a href="#" data-section="femenino">Femenino</a></li>
+        <li><a href="#" data-section="infantil">Infantil</a></li>
+      </ul>
+    </nav>
+  </header>
 
   <!-- Contenido dinámico -->
   <main id="main-content">
@@ -90,35 +68,84 @@
   </main>
 
   <!-- Footer -->
-    <footer class="footer">
-  <p>© 2025 Alberto Ramírez Farfán. Todos los derechos reservados.</p>
-  <p>📱 <a href="https://instagram.com/alberto_rf12">Mi Instagram</a><br> ☎ +34 687 27 84 21 <br> ✉ <a href="mailto:albertorfesp@gmail.com">albertorfesp@gmail.com</a></p>
-</footer>
+  <footer class="footer">
+    <p>© 2025 Alberto Ramírez Farfán. Todos los derechos reservados.</p>
+    <p>📱 <a href="https://instagram.com/alberto_rf12">Mi Instagram</a><br> ☎ +34 687 27 84 21 <br> ✉ <a href="mailto:albertorfesp@gmail.com">albertorfesp@gmail.com</a></p>
+  </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-<script src="script.js"></script>
+  <script src="script.js"></script>
 
-<script>
-  const AVISO_VERSION = "1.0";
+  <script>
+    const AVISO_VERSION = "1.0";
+    function cerrarAviso() {
+      const modal = document.getElementById("modal-aviso");
+      if (modal) {
+        modal.style.display = "none";
+        localStorage.setItem("avisoVisto", AVISO_VERSION);
+      }
+    }
+    (function() {
+      const visto = localStorage.getItem("avisoVisto");
+      const modal = document.getElementById("modal-aviso");
+      if (visto === AVISO_VERSION && modal) {
+        modal.style.display = "none";
+      }
+    })();
+  </script>
 
-  function cerrarAviso() {
-    const modal = document.getElementById("modal-aviso");
-    if (modal) {
-      modal.style.display = "none";
-      localStorage.setItem("avisoVisto", AVISO_VERSION);
+  <!-- Banner de cookies personalizado -->
+  <div id="cookie-banner" style="position: fixed; bottom: 0; width: 100%; background: #2a2a2a; color: white; padding: 1rem; text-align: center; z-index: 9999;">
+    Usamos cookies para análisis anónimos (Google Analytics).
+    <button onclick="aceptarCookies()" style="margin-left: 1rem; background: #663399; color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer;">Aceptar</button>
+  </div>
+
+  <script>
+    function aceptarCookies() {
+      localStorage.setItem("cookiesAceptadas", "true");
+      document.getElementById("cookie-banner").style.display = "none";
+      cargarAnalytics();
+    }
+
+    function cargarAnalytics() {
+      const script1 = document.createElement('script');
+      script1.async = true;
+      script1.src = "https://www.googletagmanager.com/gtag/js?id=G-PQXCRX0T6N";
+      document.head.appendChild(script1);
+
+      const script2 = document.createElement('script');
+      script2.innerHTML = `
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-PQXCRX0T6N');
+      `;
+      document.head.appendChild(script2);
+    }
+
+    if (localStorage.getItem("cookiesAceptadas") === "true") {
+      document.getElementById("cookie-banner").style.display = "none";
+      cargarAnalytics();
+    }
+
+    if (celda && key === "Final" && partido.equipo1 && partido.equipo2) {
+  const g1 = parseInt(partido.goles1);
+  const g2 = parseInt(partido.goles2);
+  if (g1 !== -1 && g2 !== -1) {
+    // Mostrar resultado
+    celda.innerHTML = `<strong>${partido.equipo1}</strong> ${g1} - ${g2} <strong>${partido.equipo2}</strong><br>Hora: ${partido.hora || '??:??h'}`;
+    
+    // Mostrar celebración
+    const celebracion = document.getElementById("celebracion");
+    const ganadorFinal = document.getElementById("ganadorFinal");
+    if (celebracion && ganadorFinal) {
+      celebracion.style.display = "block";
+      ganadorFinal.textContent = g1 > g2 ? partido.equipo1 : partido.equipo2;
+      lanzarFuegosArtificiales();
     }
   }
+}
 
-  (function() {
-    const visto = localStorage.getItem("avisoVisto");
-    const modal = document.getElementById("modal-aviso");
-    if (visto === AVISO_VERSION && modal) {
-      modal.style.display = "none";
-    }
-  })();
-</script>
-
-
-  
+  </script>
 </body>
 </html>

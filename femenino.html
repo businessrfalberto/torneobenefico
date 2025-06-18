@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Final Femenina</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .ganador {
+      display: none;
+      text-align: center;
+      margin-top: 40px;
+    }
+    .ganador.visible {
+      display: block;
+      animation: fadeIn 1.5s ease-in-out;
+    }
+    .cohetes {
+      font-size: 2rem;
+      animation: bounce 1s infinite alternate;
+    }
+    @keyframes bounce {
+      from { transform: translateY(0); }
+      to { transform: translateY(-10px); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+  </style>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
+    import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCCF4BVOoud_Tg_SE0WiUAbtBSAPzCx-1k",
+      authDomain: "torneo-moraos.firebaseapp.com",
+      databaseURL: "https://torneo-moraos-default-rtdb.europe-west1.firebasedatabase.app",
+      projectId: "torneo-moraos",
+      storageBucket: "torneo-moraos.appspot.com",
+      messagingSenderId: "1097042355622",
+      appId: "1:1097042355622:web:2d3e0a270f8a84bdbddb67"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    const resIda = document.getElementById("res_ida");
+    const resVuelta = document.getElementById("res_vuelta");
+    const horaIda = document.getElementById("hora_ida");
+    const horaVuelta = document.getElementById("hora_vuelta");
+    const ganadorDiv = document.getElementById("ganador");
+
+    let resultadoIda = null;
+    let resultadoVuelta = null;
+
+    onValue(ref(db, "ResultadosFemenino/ida"), (snapshot) => {
+      if (snapshot.exists()) {
+        const data = snapshot.val();
+        if (esPendiente(data.resultado)) {
+          resIda.textContent = "Pendiente";
+        } else {
+          resIda.textContent = data.resultado;
+          resultadoIda = data.resultado;
+        }
+        horaIda.textContent = data.hora || "Por confirmar";
+        verificarGanador();
+      }
+    });
+
+    onValue(ref(db, "ResultadosFemenino/vuelta"), (snapshot) => {
+      if (snapshot.exists()) {
+        const data = snapshot.val();
+        if (esPendiente(data.resultado)) {
+          resVuelta.textContent = "Pendiente";
+        } else {
+          resVuelta.textContent = data.resultado;
+          resultadoVuelta = data.resultado;
+        }
+        horaVuelta.textContent = data.hora || "Por confirmar";
+        verificarGanador();
+      }
+    });
+
+    function esPendiente(res) {
+      return res.includes(" -1 - -1 ");
+    }
+
+    function verificarGanador() {
+      if (resultadoIda && resultadoVuelta) {
+        const total = calcularGanador(resultadoIda, resultadoVuelta);
+        ganadorDiv.querySelector("h3").textContent = `🏆 ¡${total.ganador} gana la final!`;
+        ganadorDiv.classList.add("visible");
+      }
+    }
+
+    function calcularGanador(res1, res2) {
+      const [equipoA1, golesA1, equipoB1, golesB1] = parseResultado(res1);
+      const [equipoA2, golesB2, equipoB2, golesA2] = parseResultado(res2);
+      const golesEquipo1 = parseInt(golesA1) + parseInt(golesA2);
+      const golesEquipo2 = parseInt(golesB1) + parseInt(golesB2);
+      const ganador = golesEquipo1 > golesEquipo2 ? equipoA1 : golesEquipo2 > golesEquipo1 ? equipoB1 : "Empate";
+      return { ganador, golesEquipo1, golesEquipo2 };
+    }
+
+    function parseResultado(resultado) {
+      const partes = resultado.match(/(.+?) (\d+) - (\d+) (.+)/);
+      return [partes[1], partes[2], partes[4], partes[3]];
+    }
+  </script>
+</head>
+<body>
+  <header>
+    <a href="index.html" id="logo-img">🏠 Volver al inicio</a>
+  </header>
+
+  <main class="section">
+    <h2>Final - Categoría Femenina</h2>
+
+    <div class="partido">
+      <p>Partido de ida: <span id="res_ida">Cargando...</span><br>Hora: <span id="hora_ida">Cargando...</span></p>
+    </div>
+    <div class="partido">
+      <p>Partido de vuelta: <span id="res_vuelta">Cargando...</span><br>Hora: <span id="hora_vuelta">Cargando...</span></p>
+    </div>
+
+    <div class="ganador" id="ganador">
+      <div class="cohetes">🎆 🎉 🎆</div>
+      <h3></h3>
+      <div class="cohetes">🎆 🎉 🎆</div>
+    </div>
+  </main>
+</body>
+</html>

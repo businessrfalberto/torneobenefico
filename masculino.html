@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Categoría Masculina</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .partido {
+            background-color: #222;
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            text-align: center;
+            font-size: 1.1rem;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .partido p {
+            margin: 0;
+            color: white;
+        }
+
+        .clasificacion {
+            margin-bottom: 40px;
+        }
+
+        .eliminatorias-bracket {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 40px;
+            flex-wrap: wrap;
+            margin-top: 40px;
+        }
+
+        .fase {
+            flex: 1 1 200px;
+            text-align: center;
+            background: #222;
+            border-radius: 8px;
+            padding: 15px;
+            color: white;
+        }
+
+        .final {
+            flex: 1 1 300px;
+            text-align: center;
+            background: #3a2a50;
+            border-radius: 12px;
+            padding: 20px;
+            font-weight: bold;
+        }
+    </style>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
+        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCCF4BVOoud_Tg_SE0WiUAbtBSAPzCx-1k",
+            authDomain: "torneo-moraos.firebaseapp.com",
+            databaseURL: "https://torneo-moraos-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "torneo-moraos",
+            storageBucket: "torneo-moraos.appspot.com",
+            messagingSenderId: "1097042355622",
+            appId: "1:1097042355622:web:2d3e0a270f8a84bdbddb67"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        const grupos = ['GrupoA', 'GrupoB'];
+
+        function calcularClasificacion(partidos) {
+            const equipos = {};
+            const detalles = [];
+
+            for (const key in partidos) {
+                const p = partidos[key];
+                const equipo1 = p.equipo1;
+                const equipo2 = p.equipo2;
+                const g1 = parseInt(p.goles1);
+const g2 = parseInt(p.goles2);
+
+// Asegurarse de que ambos equipos estén registrados, aunque el partido no se haya jugado
+if (!equipos[equipo1]) equipos[equipo1] = { pts: 0, gf: 0, gc: 0 };
+if (!equipos[equipo2]) equipos[equipo2] = { pts: 0, gf: 0, gc: 0 };
+
+// Si el partido no se ha jugado (ambos -1), lo mostramos como pendiente y lo ignoramos en la clasificación
+if (g1 === -1 && g2 === -1) {
+  detalles.push(`<div class="partido"><p><strong>${equipo1}</strong> vs <strong>${equipo2}</strong> (Pendiente)<br>Hora: ${p.hora || 'Por confirmar'}</p></div>`);
+  continue;
+}
+
+
+
+                if (!equipos[equipo1]) equipos[equipo1] = { pts: 0, gf: 0, gc: 0 };
+                if (!equipos[equipo2]) equipos[equipo2] = { pts: 0, gf: 0, gc: 0 };
+
+                equipos[equipo1].gf += g1;
+                equipos[equipo1].gc += g2;
+                equipos[equipo2].gf += g2;
+                equipos[equipo2].gc += g1;
+
+                if (g1 > g2) equipos[equipo1].pts += 3;
+                else if (g1 < g2) equipos[equipo2].pts += 3;
+                else {
+                    equipos[equipo1].pts += 1;
+                    equipos[equipo2].pts += 1;
+                }
+            }
+
+            const clasificacion = Object.entries(equipos)
+                .map(([nombre, stats]) => ({
+                    nombre,
+                    ...stats,
+                    dif: stats.gf - stats.gc
+                }))
+                .sort((a, b) => b.pts - a.pts || b.gf - a.gf);
+
+            return { clasificacion, detalles };
+        }
+
+
+        grupos.forEach(grupo => {
+            const refGrupo = ref(db, `ResultadosMasculino/${grupo}/partidos`);
+            onValue(refGrupo, snapshot => {
+                if (snapshot.exists()) {
+                    const partidos = snapshot.val();
+                    const { clasificacion, detalles } = calcularClasificacion(partidos);
+
+                    const tabla = document.getElementById(`tabla-${grupo}`);
+                    tabla.innerHTML = clasificacion.map(eq => `
+            <tr>
+              <td>${eq.nombre}</td>
+              <td>${eq.pts}</td>
+              <td>${eq.gf}</td>
+              <td>${eq.gc}</td>
+              <td>${eq.dif > 0 ? '+' : ''}${eq.dif}</td>
+            </tr>
+          `).join('');
+
+                    const partidosDiv = document.getElementById(`partidos-${grupo}`);
+                    partidosDiv.innerHTML = detalles.join('');
+                }
+            });
+        });
+
+        const elimRef = ref(db, "ResultadosMasculino/Eliminatoria");
+        onValue(elimRef, snap => {
+            if (snap.exists()) {
+                const datos = snap.val();
+                for (const key in datos) {
+                    const celda = document.getElementById(key);
+                    const partido = datos[key];
+
+                    if (celda && partido.equipo1 && partido.equipo2) {
+                        const g1 = parseInt(partido.goles1);
+                        const g2 = parseInt(partido.goles2);
+
+                        if (g1 === -1 && g2 === -1) {
+    celda.innerHTML = `<strong>${partido.equipo1}</strong> vs <strong>${partido.equipo2}</strong> (Pendiente)<br>Hora: ${partido.hora || '??:??h'}`;
+} else {
+    celda.innerHTML = `<strong>${partido.equipo1}</strong> ${g1} - ${g2} <strong>${partido.equipo2}</strong><br>Hora: ${partido.hora || '??:??h'}`;
+}
+
+
+                    }
+
+                }
+            }
+        });
+    </script>
+</head>
+
+<body>
+    <!-- Header -->
+<header class="navbar">
+  <div class="logo">
+    <a href="index.html">
+      <img src="assets/images/logo.jpeg" alt="Logo del Torneo" id="logo-img"/>
+    </a>
+  </div>
+  <nav class="nav-menu">
+    <ul class="nav-links" id="nav-links">
+      <li><a href="index.html">Inicio</a></li>
+      <li><a href="masculino.html">Masculino</a></li>
+      <li><a href="femenino.html">Femenino</a></li>
+      <li><a href="infantil.html">Infantil</a></li>
+    </ul>
+  </nav>
+</header>
+
+
+    <main class="section">
+        <h2>Partidos - Categoría Masculina</h2>
+
+        <h3>Grupo A</h3>
+        <div id="partidos-GrupoA"></div>
+        <table class="clasificacion">
+            <thead>
+                <tr>
+                    <th>Equipo</th>
+                    <th>Pts</th>
+                    <th>GF</th>
+                    <th>GC</th>
+                    <th>Dif</th>
+                </tr>
+            </thead>
+            <tbody id="tabla-GrupoA"></tbody>
+        </table>
+
+        <h3>Grupo B</h3>
+        <div id="partidos-GrupoB"></div>
+        <table class="clasificacion">
+            <thead>
+                <tr>
+                    <th>Equipo</th>
+                    <th>Pts</th>
+                    <th>GF</th>
+                    <th>GC</th>
+                    <th>Dif</th>
+                </tr>
+            </thead>
+            <tbody id="tabla-GrupoB"></tbody>
+        </table>
+
+        <h2>Eliminatorias</h2>
+        <div class="eliminatorias-bracket">
+            <div class="fase"><strong>Semifinal 1</strong>
+                <p id="Semifinal1">Cargando...</p>
+            </div>
+            <div class="fase"><strong>Semifinal 2</strong>
+                <p id="Semifinal2">Cargando...</p>
+            </div>
+            <div class="final"><strong>Final</strong>
+                <p id="Final">Cargando...</p>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+  <p>© 2025 Alberto Ramírez Farfán. Todos los derechos reservados.</p>
+  <p>📱 <a href="https://instagram.com/alberto_rf12">Mi Instagram</a><br> ☎ +34 687 27 84 21 <br> ✉ <a href="mailto:albertorfesp@gmail.com">albertorfesp@gmail.com</a></p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script src="script.js"></script>
+
+<!-- Banner de cookies -->
+<div id="cookie-banner" style="position: fixed; bottom: 0; width: 100%; background: #2a2a2a; color: white; padding: 1rem; text-align: center; z-index: 9999;">
+  Usamos cookies para análisis anónimos (Google Analytics).
+  <button onclick="aceptarCookies()" style="margin-left: 1rem; background: #663399; color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer;">Aceptar</button>
+</div>
+
+<script>
+  function aceptarCookies() {
+    localStorage.setItem("cookiesAceptadas", "true");
+    document.getElementById("cookie-banner").style.display = "none";
+    cargarAnalytics();
+  }
+
+  function cargarAnalytics() {
+    const script1 = document.createElement('script');
+    script1.async = true;
+    script1.src = "https://www.googletagmanager.com/gtag/js?id=G-PQXCRX0T6N";
+    document.head.appendChild(script1);
+
+    const script2 = document.createElement('script');
+    script2.innerHTML = `
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-PQXCRX0T6N');
+    `;
+    document.head.appendChild(script2);
+  }
+
+  if (localStorage.getItem("cookiesAceptadas") === "true") {
+    document.getElementById("cookie-banner").style.display = "none";
+    cargarAnalytics();
+  }
+</script>
+
+</body>
+
+</html>

@@ -18,37 +18,43 @@
     }
 
     .contenedor-equipos {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 1.5rem;
-      max-width: 1000px;
-      margin: auto;
-    }
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* antes: auto-fit */
+  gap: 1.5rem;
+  max-width: 1000px; /* puedes aumentarlo si quieres más espacio */
+  margin: auto;
+}
+
 
     .tarjeta {
-      background-color: white;
-      border-radius: 12px;
-      padding: 1rem;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-      cursor: pointer;
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
+  background-color: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-right: 2px solid #ccc; /* línea entre tarjetas */
+}
 
-    .tarjeta:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 6px 14px rgba(0,0,0,0.15);
-    }
+.tarjeta:nth-child(4n) {
+  border-right: none; /* elimina la línea del último elemento de cada fila */
+}
+
 
     .tarjeta.votado {
       border: 3px solid #663399;
     }
 
     .tarjeta img {
-      width: 200px;
-      height: 200px;
-      object-fit: contain;
-      margin-bottom: 0.5rem;
-    }
+  width: 220px;
+  height: 220px;
+  object-fit: contain;
+  margin-bottom: 0.8rem;
+}
+
 
     .nombre-equipo {
       font-weight: bold;
@@ -85,15 +91,18 @@
     const db = getDatabase(app);
 
     const equipos = [
-      { nombre: "CD Giro", escudo: "assets/images/badge1.png" },
-      { nombre: "Totys FC", escudo: "assets/images/badge2.png" },
-      { nombre: "Totys Fem", escudo: "assets/images/badge3.png" },
-      { nombre: "Real Canteranos", escudo: "assets/images/badge4.png" },
-      { nombre: "Con Tu Cruz Fc", escudo: "assets/images/badge5.png" },
-      { nombre: "Bajo Palio Fc", escudo: "assets/images/badge6.png" },
-      { nombre: "Real SPQR Balompié", escudo: "assets/images/badge7.png" },
-      { nombre: "Club Atlético Polito", escudo: "assets/images/badge8.png" },
-      { nombre: "Tromponetas Fc", escudo: "assets/images/badge9.png" }
+      { nombre: "Totys Fem", escudo: "assets/images/badge_1.png" },
+      { nombre: "Tromponeetas Fem", escudo: "assets/images/badge_2.png" },
+      { nombre: "Los Escopeteros", escudo: "assets/images/badge_3.png" },
+      { nombre: "Real Canteranos JR", escudo: "assets/images/badge_4.png" },
+      { nombre: "Tromponetas Fc", escudo: "assets/images/badge_5.png" },
+      { nombre: "CD Giro", escudo: "assets/images/badge_6.png" },
+      { nombre: "Toys FC", escudo: "assets/images/badge_7.png" },
+      { nombre: "Real Canteranos", escudo: "assets/images/badge_8.png" },
+      { nombre: "Con Tu Cruz Castilla FC", escudo: "assets/images/badge_9.png" },
+      { nombre: "Club Atlético Polito", escudo: "assets/images/badge_10.png" },
+      { nombre: "Real SPQR Balompié", escudo: "assets/images/badge_11.png" },
+      { nombre: "Los Vaquillas", escudo: "assets/images/badge_12.png" }
     ];
 
     const contenedor = document.getElementById("equipos");
