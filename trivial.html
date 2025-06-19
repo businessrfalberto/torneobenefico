@@ -68,6 +68,7 @@
 <body>
   <div class="quiz-container">
     <h1>Trivia sobre Jesús y el Cristianismo</h1>
+    <div id="progress" style="margin-bottom: 15px; font-weight: bold;"></div>
     <div class="question" id="question"></div>
     <div class="answers" id="answers"></div>
     <div class="result" id="result"></div>
@@ -108,6 +109,8 @@
     const shuffledQuestions = questions.sort(() => Math.random() - 0.5);
 
     function showQuestion() {
+      document.getElementById("progress").innerText = `Pregunta ${currentQuestion + 1} de ${shuffledQuestions.length}`;
+
       const q = shuffledQuestions[currentQuestion];
       document.getElementById("question").innerText = q.question;
       const answersDiv = document.getElementById("answers");

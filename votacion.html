@@ -5,12 +5,21 @@
   <title>Votación</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background: #f8f8f8;
-      margin: 0;
-      padding: 2rem;
-      text-align: center;
-    }
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 2rem;
+  text-align: center;
+  background-color: black;
+  background-image: url("assets/images/stardust.png");
+  background-size: cover;
+  animation: moveStars 200s linear infinite;
+  color: #fff;
+}
+
+@keyframes moveStars {
+  from { background-position: 0 0; }
+  to { background-position: 10000px 10000px; }
+}
 
     h2 {
       margin-bottom: 2rem;
@@ -19,7 +28,7 @@
 
     .contenedor-equipos {
   display: grid;
-  grid-template-columns: repeat(4, 1fr); /* antes: auto-fit */
+  grid-template-columns: repeat(3, 1fr); /* antes: auto-fit */
   gap: 1.5rem;
   max-width: 1000px; /* puedes aumentarlo si quieres más espacio */
   margin: auto;
@@ -66,10 +75,13 @@
       color: #555;
       font-size: 0.95rem;
     }
+    .titulo-votacion {
+  color: white;
+}
   </style>
 </head>
 <body>
-  <h2>Vota por tu equipo favorito</h2>
+  <h2 class="titulo-votacion">Vota por tu equipo favorito</h2>
   <div class="contenedor-equipos" id="equipos"></div>
 
   <script type="module">

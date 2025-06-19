@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Equipos y Jugadores</title>
+  <style>
+    body {
+      margin: 0;
+      background-color: #000;
+      background-image: url('assets/images/stardust.png');
+      background-size: cover;
+      background-repeat: repeat;
+      background-position: center;
+      font-family: Arial, sans-serif;
+      color: white;
+      text-align: center;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    h1 {
+      margin-bottom: 2rem;
+    }
+
+    video {
+      max-width: 100%;
+      display: block;
+      margin: auto;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+    }
+
+    .btn-volver {
+      margin-top: 2rem;
+      padding: 10px 20px;
+      background-color: #663399;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .btn-volver:hover {
+      background-color: #502a83;
+    }
+  </style>
+</head>
+<body>
+  <h1>Sección en construcción, finalización el día 19 por la tarde noche</h1>
+  <video autoplay loop muted playsinline>
+    <source src="assets/images/jesusconstruyendo.mp4" type="video/mp4">
+    Tu navegador no soporta la etiqueta de video.
+  </video>
+
+  <button class="btn-volver" onclick="window.location.href='index.html'">Volver al inicio</button>
+</body>
+</html>

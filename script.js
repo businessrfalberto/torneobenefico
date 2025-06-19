@@ -75,6 +75,15 @@ document.addEventListener('DOMContentLoaded', () => {
   </div>
 </div>
 
+<div class="minijuego-card" onclick="window.location.href='equipos.html'">
+  <div class="minijuego-icono">👥</div>
+  <div class="minijuego-texto">
+    <h3>Conoce a los equipos</h3>
+    <p>Descubre quiénes son los jugadores que forman parte del torneo.</p>
+  </div>
+</div>
+
+
 <div class="minijuego-card" onclick="window.location.href='trivial.html'">
   <div class="minijuego-icono">✅</div>
   <div class="minijuego-texto">
@@ -104,7 +113,7 @@ document.addEventListener('DOMContentLoaded', () => {
     masculino: `
     
       <main class="section">
-        <h2>Partidos - Categoría Masculina</h2>
+        <h2>Partidos - Categoría Masculina<br></h2>
 
         <h3>Grupo A</h3>
         <div id="partidos-GrupoA"></div>
@@ -159,7 +168,7 @@ document.addEventListener('DOMContentLoaded', () => {
     `,
     femenino: `
   <section class="section">
-    <h2>Final - Categoría Femenina</h2>
+    <h2>Final - Categoría Femenina<br></h2>
 
     <div class="partido">
       <p>Partido de ida:<br> <span id="res_ida">Cargando...</span><br>Hora: <span id="hora_ida">Cargando...</span></p>
@@ -181,7 +190,7 @@ document.addEventListener('DOMContentLoaded', () => {
 `,
     infantil: `
        <section class="section">
-    <h2>Final - Categoría Infantil</h2>
+    <h2>Final - Categoría Infantil<br></h2>
 
     <div class="partido">
       <p id="ida">Partido de ida: Cargando...</p>
@@ -270,14 +279,15 @@ document.addEventListener('DOMContentLoaded', () => {
               const g1 = parseInt(p.goles1);
               const g2 = parseInt(p.goles2);
 
-              if (!equipos[equipo1]) equipos[equipo1] = { pts: 0, gf: 0, gc: 0 };
-              if (!equipos[equipo2]) equipos[equipo2] = { pts: 0, gf: 0, gc: 0 };
-
               if (g1 === -1 && g2 === -1) {
                 detalles.push(`<div class="partido"><p><strong>${equipo1}</strong> vs <strong>${equipo2}</strong> (Pendiente)<br>Hora: ${p.hora || 'Por confirmar'}</p></div>`);
                 continue;
               }
 
+              if (!equipos[equipo1]) equipos[equipo1] = { pts: 0, gf: 0, gc: 0 };
+              if (!equipos[equipo2]) equipos[equipo2] = { pts: 0, gf: 0, gc: 0 };
+
+              // Ahora sí: sumar goles y puntos
               equipos[equipo1].gf += g1;
               equipos[equipo1].gc += g2;
               equipos[equipo2].gf += g2;
@@ -289,6 +299,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 equipos[equipo1].pts += 1;
                 equipos[equipo2].pts += 1;
               }
+
+              detalles.push(`<div class="partido"><p><strong>${equipo1}</strong> ${g1} - ${g2} <strong>${equipo2}</strong><br>Hora: ${p.hora || 'Por confirmar'}</p></div>`);
+
             }
 
             const clasificacion = Object.entries(equipos).map(([nombre, stats]) => ({
