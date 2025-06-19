@@ -18,18 +18,25 @@
     }
 
     .cancion {
-      margin: 20px auto;
-      max-width: 500px;
-      background: #432b6c;
-      padding: 15px;
-      border-radius: 12px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-    }
+  margin: 20px auto;
+  max-width: 500px;
+  background: #432b6c;
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  width: 100%;             /* Asegura que todos sean del mismo tamaño */
+  min-height: 120px;       /* Asegura altura uniforme */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
 
     audio {
-      width: 100%;
-      margin-top: 10px;
-    }
+  width: 100%;
+  margin-top: 10px;
+}
+
 
     .titulo {
       font-weight: bold;
@@ -51,10 +58,6 @@
     <p>
       Todas las canciones han sido producidas por <strong>Alberto Ramírez Farfán</strong>, utilizando herramientas de inteligencia artificial.
       Soy el productor y tengo el derecho de distribuirlas y monetizarlas. Sin embargo, algunas de estas obras pueden no estar registradas oficialmente bajo derechos de autor, debido a que fueron generadas mediante IA.
-    </p>
-    <p style="font-style: italic; color: #555;">
-      All songs have been produced by <strong>Alberto Ramírez Farfán</strong>, using AI tools.
-      I am the producer and hold the rights to distribute and monetize them. However, some of these works may not be officially registered under copyright due to their AI-generated nature.
     </p>
   </div>
 
