@@ -583,3 +583,23 @@ html, body {
 main, .section {
   flex: 1;
 }
+
+.retro-mode {
+  background-color: #000022 !important;
+  color: #00ffcc !important;
+  font-family: 'Press Start 2P', cursive !important;
+}
+
+.retro-mode .tarjeta {
+  background-color: #111144 !important;
+  border: 3px solid #00ffcc !important;
+  box-shadow: none !important;
+}
+
+.retro-mode button,
+.retro-mode .votos,
+.retro-mode .nombre-equipo {
+  background-color: #222255 !important;
+  color: #00ffcc !important;
+  border: 2px dashed #00ffcc !important;
+}

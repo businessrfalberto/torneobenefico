@@ -6,6 +6,7 @@
   <title>Torneo Los Moraos 2025</title>
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 </head>
 
 <!-- Celebración Final -->
@@ -16,6 +17,9 @@
 
 
 <body>
+
+  
+
   <div id="modal-aviso" style="
     position: fixed;
     top: 0; left: 0;
@@ -62,8 +66,69 @@
     </nav>
   </header>
 
+<div id="countdown" style="
+  text-align: center;
+  background-color: #663399;
+  color: white;
+  padding: 10px;
+  font-weight: bold;
+  font-size: 1.2rem;
+">
+  ⏳ Comienza en: <span id="contador">Cargando...</span>
+</div>
+
+<script>
+  // Fecha objetivo en hora local de Madrid
+  const fechaObjetivo = new Date("2025-06-21T09:00:00+02:00").getTime();
+
+  const countdown = setInterval(() => {
+    const ahora = new Date().getTime();
+    const distancia = fechaObjetivo - ahora;
+
+    if (distancia <= 0) {
+      document.getElementById("countdown").style.display = "none";
+      clearInterval(countdown);
+      return;
+    }
+
+    const dias = Math.floor(distancia / (1000 * 60 * 60 * 24));
+    const horas = Math.floor((distancia % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutos = Math.floor((distancia % (1000 * 60 * 60)) / (1000 * 60));
+    const segundos = Math.floor((distancia % (1000 * 60)) / 1000);
+
+    document.getElementById("contador").textContent =
+      `${dias}d ${horas}h ${minutos}m ${segundos}s`;
+  }, 1000);
+</script>
+
+
+<!-- Botón Modo Retro -->
+<!-- Botón Modo Retro debajo del header -->
+<div id="retro-toggle" style="
+  display: flex;
+  justify-content: center;
+  margin: 1rem auto;
+">
+
+  <button onclick="toggleRetroMode()" style="
+    background: white;
+    border: 2px solid #663399;
+    color: #663399;
+    font-weight: bold;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+  ">
+    🎮 Activar Modo Retro
+  </button>
+</div>
+
+
+
   <!-- Contenido dinámico -->
   <main id="main-content">
+    
     <!-- Aquí se cargará dinámicamente el contenido -->
   </main>
 
@@ -147,5 +212,30 @@
 }
 
   </script>
+
+ 
+
+<script>
+  function toggleRetroMode() {
+    document.body.classList.toggle("retro-mode");
+
+    const activado = document.body.classList.contains("retro-mode");
+    localStorage.setItem("modoRetro", activado);
+
+    const boton = document.querySelector("#retro-toggle button");
+    boton.textContent = activado ? "🚫 Desactivar Modo Retro" : "🎮 Activar Modo Retro";
+  }
+
+  // Mantener activo el modo retro tras recarga
+  document.addEventListener("DOMContentLoaded", () => {
+    if (localStorage.getItem("modoRetro") === "true") {
+      document.body.classList.add("retro-mode");
+      const boton = document.querySelector("#retro-toggle button");
+      if (boton) boton.textContent = "🚫 Desactivar Modo Retro";
+    }
+  });
+</script>
+
+
 </body>
 </html>

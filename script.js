@@ -31,6 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
 </div>
 </section>
 
+
 <div class="minijuego-card" onclick="window.location.href='formato.html'">
   <div class="minijuego-icono">
     <img src="assets/images/perro.jpg" alt="Formato" class="icono-img">
