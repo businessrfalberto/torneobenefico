@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Votación de Equipaciones</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 2rem;
+      text-align: center;
+      background-color: black;
+      background-image: url("assets/images/stardust.png");
+      background-size: cover;
+      animation: moveStars 200s linear infinite;
+      color: #fff;
+    }
+
+    @keyframes moveStars {
+      from { background-position: 0 0; }
+      to { background-position: 10000px 10000px; }
+    }
+
+    h2 {
+      margin-bottom: 2rem;
+      color: #fff;
+    }
+
+    .contenedor-equipos {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      max-width: 1000px;
+      margin: auto;
+    }
+
+    .tarjeta {
+      background-color: white;
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .tarjeta.votado {
+      border: 3px solid #663399;
+    }
+
+    .slider {
+      position: relative;
+      width: 220px;
+      height: 220px;
+      overflow: hidden;
+      margin-bottom: 0.8rem;
+    }
+
+    .slider img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 220px;
+      height: 220px;
+      object-fit: contain;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    .slider img.active {
+      opacity: 1;
+    }
+
+    .nombre-equipo {
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+      font-size: 1.1rem;
+      color: #000;
+    }
+
+    .votos {
+      color: #555;
+      font-size: 0.95rem;
+    }
+  </style>
+</head>
+<body>
+  <h2>Vota por la equipación más bonita del torneo<br><br><strong>Pulsa sobre los escudos para ver la equipación</strong></h2>
+  <div class="contenedor-equipos" id="equipos"></div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
+    import { getDatabase, ref, get, set, onValue } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCCF4BVOoud_Tg_SE0WiUAbtBSAPzCx-1k",
+      authDomain: "torneo-moraos.firebaseapp.com",
+      databaseURL: "https://torneo-moraos-default-rtdb.europe-west1.firebasedatabase.app",
+      projectId: "torneo-moraos",
+      storageBucket: "torneo-moraos.appspot.com",
+      messagingSenderId: "1097042355622",
+      appId: "1:1097042355622:web:2d3e0a270f8a84bdbddb67"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    const equipaciones = [
+      {
+        nombre: "Totys Fem",
+        local: "assets/images/badge_1.png",
+        visitante: "assets/images/camiseta5.jpeg"
+      },
+      {
+        nombre: "Tromponetas Fem",
+        local: "assets/images/badge_2.png",
+        visitante: "assets/images/camiseta6.jpeg"
+      },
+      {
+        nombre: "Los Escopeteros",
+        local: "assets/images/badge_3.png",
+        visitante: "assets/images/camiseta1.jpg"
+      },
+      {
+        nombre: "Real Canteranos JR",
+        local: "assets/images/badge_4.png",
+        visitante: "assets/images/camiseta1.jpg"
+      },
+      {
+        nombre: "Tromponetas FC",
+        local: "assets/images/badge_5.png",
+        visitante: "assets/images/camiseta9.jpeg"
+      },
+      {
+        nombre: "CD Giro",
+        local: "assets/images/badge_6.png",
+        visitante: "assets/images/camiseta2.png"
+      },
+      {
+        nombre: "Toys FC",
+        local: "assets/images/badge_7.png",
+        visitante: "assets/images/camiseta4.jpeg"
+      },
+      {
+        nombre: "Real Canteranos",
+        local: "assets/images/badge_8.png",
+        visitante: "assets/images/camiseta7.jpeg"
+      },
+      {
+        nombre: "Con Tu Cruz Castilla FC",
+        local: "assets/images/badge_9.png",
+        visitante: "assets/images/camiseta8.jpeg"
+      },
+      {
+        nombre: "Club Atlético Polito",
+        local: "assets/images/badge_10.png",
+        visitante: "assets/images/camiseta1.jpg"
+      },
+      {
+        nombre: "Real SPQR Balompié",
+        local: "assets/images/badge_11.png",
+        visitante: "assets/images/camiseta3.jpeg"
+      },
+      {
+        nombre: "Los Vaquillas",
+        local: "assets/images/badge_12.png",
+        visitante: "assets/images/camiseta1.jpg"
+      }
+    ];
+
+    const contenedor = document.getElementById("equipos");
+    const votoAnterior = localStorage.getItem("equipacionVotada");
+
+    equipaciones.forEach(equip => {
+      const tarjeta = document.createElement("div");
+      tarjeta.className = "tarjeta";
+      tarjeta.id = `equip-${equip.nombre}`;
+
+      if (votoAnterior === equip.nombre) {
+        tarjeta.classList.add("votado");
+      }
+
+      tarjeta.innerHTML = `
+        <div class="slider">
+          <img src="${equip.local}" class="slide active" alt="Equipación local">
+          <img src="${equip.visitante}" class="slide" alt="Equipación visitante">
+        </div>
+        <div class="nombre-equipo">${equip.nombre}</div>
+        <div class="votos" id="votos-${equip.nombre}">0 votos</div>
+      `;
+
+      // Cambiar entre local y visitante al hacer clic en la imagen
+      const slider = tarjeta.querySelector(".slider");
+      slider.addEventListener("click", () => {
+        const imgs = slider.querySelectorAll("img");
+        imgs.forEach(img => img.classList.toggle("active"));
+      });
+
+      // Lógica de votación
+      tarjeta.addEventListener("click", (e) => {
+        // Evita conflicto con clic en el slider
+        if (e.target.tagName.toLowerCase() === "img") return;
+
+        const anterior = localStorage.getItem("equipacionVotada");
+        if (anterior === equip.nombre) return;
+
+        if (anterior && anterior !== equip.nombre) {
+          const refAnterior = ref(db, 'votosEquipacion/' + anterior);
+          get(refAnterior).then(snapshot => {
+            const votosPrevios = snapshot.exists() ? snapshot.val() : 1;
+            set(refAnterior, Math.max(0, votosPrevios - 1));
+          });
+          document.getElementById(`equip-${anterior}`).classList.remove("votado");
+        }
+
+        const refNuevo = ref(db, 'votosEquipacion/' + equip.nombre);
+        get(refNuevo).then(snapshot => {
+          const votosActuales = snapshot.exists() ? snapshot.val() : 0;
+          set(refNuevo, votosActuales + 1);
+        });
+
+        localStorage.setItem("equipacionVotada", equip.nombre);
+        document.querySelectorAll(".tarjeta").forEach(e => e.classList.remove("votado"));
+        tarjeta.classList.add("votado");
+      });
+
+      // Escuchar cambios en votos
+      const votosRef = ref(db, 'votosEquipacion/' + equip.nombre);
+      onValue(votosRef, snapshot => {
+        const votos = snapshot.exists() ? snapshot.val() : 0;
+        document.getElementById("votos-" + equip.nombre).textContent = `${votos} voto${votos !== 1 ? "s" : ""}`;
+      });
+
+      contenedor.appendChild(tarjeta);
+    });
+  </script>
+</body>
+</html>

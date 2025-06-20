@@ -51,7 +51,15 @@ document.addEventListener('DOMContentLoaded', () => {
 </div>
 
 
-    <div class="minijuego-card" onclick="window.location.href='votacion.html'">
+    <div class="minijuego-card" onclick="window.location.href='votosEquipacion.html'">
+  <div class="minijuego-icono">📝</div>
+  <div class="minijuego-texto">
+    <h3>Vota por tu equipación favorita</h3>
+  <p>Haz clic en el botón para votar por la equipación que más te ha gustado.</p>
+  </div>
+</div>
+
+<div class="minijuego-card" onclick="window.location.href='votacion.html'">
   <div class="minijuego-icono">🔮</div>
   <div class="minijuego-texto">
     <h3>Vota por tu equipo favorito</h3>
