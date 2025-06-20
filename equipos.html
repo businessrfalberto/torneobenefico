@@ -1,63 +1,156 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Equipos y Jugadores</title>
+  <link rel="stylesheet" href="style.css">
   <style>
     body {
-      margin: 0;
       background-color: #000;
       background-image: url('assets/images/stardust.png');
       background-size: cover;
       background-repeat: repeat;
-      background-position: center;
-      font-family: Arial, sans-serif;
       color: white;
-      text-align: center;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
+      font-family: Arial, sans-serif;
       padding: 2rem;
     }
 
     h1 {
+      text-align: center;
       margin-bottom: 2rem;
     }
 
-    video {
-      max-width: 100%;
-      display: block;
-      margin: auto;
-      border-radius: 12px;
-      box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
-    }
-
-    .btn-volver {
-      margin-top: 2rem;
-      padding: 10px 20px;
-      background-color: #663399;
-      border: none;
-      border-radius: 8px;
-      color: white;
-      font-size: 16px;
+    .equipo {
+      margin: 1rem auto;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      padding: 1rem;
       cursor: pointer;
-      transition: background-color 0.3s;
+      transition: background 0.3s;
+      max-width: 500px;
     }
 
-    .btn-volver:hover {
-      background-color: #502a83;
+    .equipo:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .jugadores {
+      display: none;
+      margin-top: 1rem;
+      text-align: left;
+    }
+
+    .jugadores ul {
+      list-style: none;
+      padding-left: 1rem;
+    }
+
+    .jugadores li {
+      margin-bottom: 4px;
     }
   </style>
 </head>
 <body>
-  <h1>Sección en construcción, finalización el día 19 por la tarde noche</h1>
-  <video autoplay loop muted playsinline>
-    <source src="assets/images/jesusconstruyendo.mp4" type="video/mp4">
-    Tu navegador no soporta la etiqueta de video.
-  </video>
+  <h1>Equipos inscritos</h1>
 
-  <button class="btn-volver" onclick="window.location.href='index.html'">Volver al inicio</button>
+  <!-- Equipos generados -->
+  <div id="equipos-container"></div>
+
+  <script>
+    const equipos = {
+      "SPQR": [
+        "Luis Santos", "José Miguel Ruiz Rueda", "Raúl Sánchez de la Rosa", "Antonio Madrid Romero", "J. María",
+        "Félix Carrasco Pérez", "Diego Bonilla Conejo", "José Manuel Pérez Manzanares", "Alberto García Aguilar",
+        "Dani", "Jesús Conejo Pérez", "Pedro Torres Fargón", "Miguel Ruiz Aragón", "Juan Antonio Morales González",
+        "Guillermo Fernández Fernández"
+      ],
+      "Atlético Polito": [
+        "Pedro García Guerrero", "Santiago Robles Trespalacios", "Marco Cortés Guerrero", "Diego Rueda Gallego",
+        "Raúl Solano Moreno", "Alberto Rueda Guerrero", "Aime Ronda Rueda", "Antonio Valderrama Burgos",
+        "Raúl Solano Burgos", "Juan Antonio García Fernández", "Daniel Miranda Plaza", "Eduardo Rivero",
+        "Alejandro Rodríguez Sánchez", "Juan Francisco de la Rosa", "José Francisco Plaza Leiva",
+        "Javier Moreno Fernández", "Yiyi", "Eduardo Maza Pérez"
+      ],
+      "Tromponetas FC": [
+        "José Carlos González Leiva", "Alberto Rueda Herrera", "Antonio Jiménez Vega", "Rewi Maza Pérez",
+        "Francisca García Fernández", "Ismael Olero Plaza", "Alberto Vázquez Fernández",
+        "Alejandro Guerrero Valderrama", "Pablo Martín Fernández", "José Antonio González Guerrero",
+        "David Vázquez Fernández", "Diego Sánchez Manzanares", "Alberto García Gallego"
+      ],
+      "Los Vaquillas": [
+        "Mano González Ramírez", "Antonio Jiménez Plaza", "Daniel Burgos Madrid", "Eduardo Guerrero García",
+        "Alejandro López Serrano", "Borja Zea Gómez", "Daniel Sellés Sánchez", "Iker Peinado Cabrerizo"
+      ],
+      "Con tu Cruz Castilla FC": [
+        "Francisco Rueda Burgos", "Rubén Vera Serón", "Javier González Burgos", "Abraham Zea Gómez",
+        "Abraham Cárdenas Burgos", "Daniel Fernández García", "Yeray Fernández Molero",
+        "José Carlos Catalina De La Rosa", "Juan Carlos Morales Bonilla", "Francisco José González Torres",
+        "Jesús Bresca Rueda", "Alberto Maldonado Pérez", "Raúl Rivero Fernández", "Ismael Maldonado Pérez",
+        "Daniel Plaza Benítez", "Antonio Pérez Torres"
+      ],
+      "CD Giro": [
+        "Julio Benítez", "David Benítez Zea", "José Luis Jiménez Morales", "Pablo Torres Farfán",
+        "Pablo García Gómez", "Álvaro García Hidalgo", "Alberto Ramírez Farfán", "Miguel Ramírez Farfán",
+        "Francisco Castillo Miranda", "Antonio Castillo Miranda", "Jorge Morales Moreno",
+        "Gerardo Maldonado Gómez", "Cayetano Maldonado Gómez", "Salvador Luque Martín", "Gonzalo del Pino"
+      ],
+      "Canteranos FC": [
+        "Izan Ibáñez García", "Alejandro García", "Rafael Torres", "Miguel Jesús Carrasco Tirado",
+        "David Bevena Serrano", "Rubén Rueda González", "Yousef Morabet Llorente", "Carlos García Torres",
+        "Miguel Fernández Martín", "Javier Rueda"
+      ],
+      "Tottys FC": [
+        "Francisco Ledesma", "Antonio González Leiva", "Adrián Cabrera Gómez", "Carlos Peña Gómez",
+        "Pablo García Burgos", "Bruno Hernández Gómez", "Elías Solano", "Álvaro González", "Ramón",
+        "Miguel Plaza", "Cayetano Manzanares", "Bruno Cortés", "David Serrano", "David García Molero"
+      ],
+      "Canteranos JR": [
+        "Miguel Jesús Tirado", "Mario Alín", "Alberto Sánchez Andrade", "Pablo Gallego Bonilla",
+        "Alejandro Moreno Rodríguez", "Javier Jiménez García", "Miguel Moreno Rueda",
+        "Francisco Gallego Luque", "Antonio Fernández Rueda"
+      ],
+      "Los Escanteros": [
+        "Pablo Pérez Cano", "Elías Jiménez Ramírez", "Juan Francisco Madera Ortuño",
+        "Daniel García Romero", "Hugo Hidalgo Durán", "Iker Calderos-Solano", "Antonio Serón Rosa",
+        "Antonio Madrid González", "Mario Mario González"
+      ],
+      "Totys Femenino": [
+        "María Romero", "María Jesús Pérez Farfán", "Ángela Pérez Farfán", "Esperanza Merino Utrera",
+        "Aitana Pérez García", "Daniela Blanco Torres", "Helena Torres Guerrero", "Adela Bonilla Moreno",
+        "Julia Martín Castillo", "Blanca Romero Guerrero", "Mariana", "Salud Ledesma", "Andrea Plaza",
+        "Andrea García", "Lola Aguilar", "Andrea hermana Rubén"
+      ],
+      "Tromponetas Femenino": [
+        "Carlota Lao Serrano", "Diana Gómez Lombardo", "Ángela Lao Serrano", "Laura Agüera Cabrera",
+        "Marta Rueda Guerrero", "Laura García Romero", "Blanca Manzanares Benítez", "María Rueda Guerrero",
+        "Alicia Fernández García", "Elena Pérez Angulo", "Daniela Belado Torres"
+      ]
+    };
+
+    const contenedor = document.getElementById("equipos-container");
+
+    for (const [nombre, jugadores] of Object.entries(equipos)) {
+      const divEquipo = document.createElement("div");
+      divEquipo.className = "equipo";
+      divEquipo.innerHTML = `
+        <h2>${nombre}</h2>
+        <div class="jugadores">
+          <ul>${jugadores.map(j => `<li>${j}</li>`).join("")}</ul>
+        </div>
+      `;
+      divEquipo.onclick = function () {
+        const lista = this.querySelector(".jugadores");
+        lista.style.display = lista.style.display === "block" ? "none" : "block";
+      };
+      contenedor.appendChild(divEquipo);
+    }
+  </script>
+
+   <!-- Footer -->
+  <footer class="footer">
+    <p>© 2025 Alberto Ramírez Farfán. Todos los derechos reservados.</p>
+    <p>📱 <a href="https://instagram.com/alberto_rf12">Mi Instagram</a><br> ☎ +34 687 27 84 21 <br> ✉ <a href="mailto:albertorfesp@gmail.com">albertorfesp@gmail.com</a></p>
+  </footer>
 </body>
 </html>

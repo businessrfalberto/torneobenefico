@@ -224,6 +224,8 @@ document.addEventListener('DOMContentLoaded', () => {
     `
   };
 
+
+
   // Función principal para cargar contenido y marcar como activo
   function cargarSeccion(seccion) {
     // Ocultar celebración si cambiamos de sección
